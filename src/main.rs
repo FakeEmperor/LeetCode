@@ -6,13 +6,12 @@ mod merge_sorted_arrays;
 mod two_sums;
 mod valid_anagrams;
 mod best_time_to_buy_and_sell_stocks;
+mod reshape_the_matrixs;
+mod pascals_triangles;
 
 fn main() {
     println!(
         "{:?}",
-        intersection_of_two_array_ii::Solution::intersect(
-            vec![9, 2, 2, 3, 4, 2],
-            vec![9, 8, 2, 2, 4]
-        )
+        pascals_triangles::Solution::generate(6)
     );
 }
