@@ -1,56 +1,41 @@
-use std::{cell::RefCell, rc::Rc};
+use partition_list::ListNode;
 
-mod best_time_to_buy_and_sell_stocks;
-mod contains_duplicates;
-mod detect_squares;
-mod first_unique_character_in_a_strings;
-mod implement_queue_using_stacks;
-mod integer_to_romans;
-mod intersection_of_two_array_ii;
-mod maximum_subarrays;
-mod merge_sorted_arrays;
-mod pascals_triangles;
-mod path_sum;
-mod ransom_notes;
-mod remove_duplicates_from_sorted_list;
-mod reshape_the_matrixs;
-mod roman_to_integers;
-mod search_a_2_d_matrixs;
-mod two_sums;
-mod valid_anagrams;
-mod valid_parentheses;
-mod valid_sudokus;
-mod validate_binary_search_trees;
-mod two_sum_iv_input_is_a_bst;
+
+mod partition_list;
+
+fn make_nodes(values: &Vec<i32>) -> Option<Box<partition_list::ListNode>> {
+    let mut head = None;
+    let mut tail: &mut Option<Box<partition_list::ListNode>> = &mut None;
+    for val in values {
+        let node = Box::new(partition_list::ListNode::new(*val));
+        if let Some(tail_node) = tail {
+            tail_node.next = Some(node); 
+            tail = &mut tail_node.next;
+        } else {
+            head = Some(node);
+            tail = &mut head;
+        }
+    }
+    return head;
+}
+
+fn print_list(mut head: &Option<Box<ListNode>>, delim: &str) -> String {
+    let mut print = String::new();
+    while let Some(node) = head {
+        if print.len() > 0 {
+            print.push_str(delim);
+        }
+        print.push_str(format!("{}", node.val).as_str());
+
+        head = &node.next;
+    }
+    return print;
+}
 
 fn main() {
-    let a = Some(Box::<_>::new(32));
-    let b = a.as_ref();
-    println!(
-        "{:?}",
-        path_sum::Solution::has_path_sum(
-            Some(Rc::new(RefCell::new(path_sum::TreeNode {
-                val: 1,
-                right: None,
-                left: Some(Rc::new(RefCell::new(path_sum::TreeNode {
-                    val: 2,
-                    left: Some(Rc::new(RefCell::new(path_sum::TreeNode {
-                        val: 3,
-                        left: Some(Rc::new(RefCell::new(path_sum::TreeNode {
-                            val: 4,
-                            left: Some(Rc::new(RefCell::new(path_sum::TreeNode {
-                                val: 5,
-                                left: None,
-                                right: None
-                            }))),
-                            right: None
-                        }))),
-                        right: None
-                    }))),
-                    right: None
-                }))),
-            }))),
-            1
-        )
-    );
+    let values = vec![1, 4, 3, 2, 5, 2];
+    let input = make_nodes(&values);
+    let output = partition_list::Solution::partition(input, 3);
+    println!("Input: {}", print_list(&make_nodes(&values), &" -> "));
+    println!("Output: {}", print_list(&output, &" -> "));
 }
